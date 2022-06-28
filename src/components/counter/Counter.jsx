@@ -16,7 +16,7 @@ class Counter extends Component {
     render() {
         return (
         <div className='counter'>
-            <button onClick={this.increment}>Add One</button>
+            <button onClick={this.increment}>+{this.props.by}</button>
             <span className="count">{this.state.counter}</span>
         </div>
         )
@@ -24,7 +24,7 @@ class Counter extends Component {
 
     increment() {
         this.setState({
-            counter: this.state.counter + 1
+            counter: this.state.counter + this.props.by
         })
       }
   }
