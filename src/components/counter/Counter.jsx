@@ -1,14 +1,35 @@
 import React, { Component } from 'react'
 import './Counter.css'
 
-function Counter() {
-    return (
-      <div className='counter'>
-         <button>Add One</button>
-         <span className="count">0</span>
-      </div>
-    );
+class Counter extends Component {
+    
+    
+    constructor() {
+        super()
+        this.state = {
+            counter : 0
+        }
+        this.increment = this.increment.bind(this);
+    }
+
+
+    render() {
+        return (
+        <div className='counter'>
+            <button onClick={this.increment}>Add One</button>
+            <span className="count">{this.state.counter}</span>
+        </div>
+        )
+    }
+
+    increment() {
+        this.setState({
+            counter: this.state.counter + 1
+        })
+      }
   }
+
+
 
   export default Counter;
 
