@@ -17,7 +17,7 @@ class CounterButton extends Component {
     render() {
         return (
         <div className='counterButton'>
-            <button onClick={this.increment}>+{this.props.by}</button>
+            <button onClick={this.increment}>{this.props.sign}{this.props.by}</button>
         </div>
         )
     }
@@ -36,11 +36,13 @@ class CounterButton extends Component {
   }
 
   CounterButton.defaultProps = {
-    by : 1
+    by : 1,
+    sign : "+"
   }
 
   CounterButton.propTypes = {
-    by : PropTypes.number
+    by : PropTypes.number,
+    sign : PropTypes.string
   }
 
   export default CounterButton;
