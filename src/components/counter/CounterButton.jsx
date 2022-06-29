@@ -23,9 +23,11 @@ class CounterButton extends Component {
     }
 
     increment() {
-        this.setState({
-            counter: this.state.counter + this.props.by
-        })
+        this.setState(
+            (prevState) => {
+                return {counter: prevState.counter + this.props.by}
+            }
+        )
         // This references the property passed in
         // when it's created in Counter
         // incrementMethod={....}
