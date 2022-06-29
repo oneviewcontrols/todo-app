@@ -14,8 +14,8 @@ class ResetButton extends Component {
 
     render() {
         return (
-        <div className='resetButton'>
-            <button onClick={this.reset}>Reset</button>
+        <div >
+            <button className='resetButton' onClick={this.reset}>Reset</button>
         </div>
         )
     }

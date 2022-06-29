@@ -1,10 +1,24 @@
-button {
+
+.topDiv {
+    padding-top: 50px;
+}
+
+.counterButton {
     font-size: 16px;
     background-color: green;
     padding: 15px 30px;
     color: white;
     width: 100px;
 }
+
+.resetButton {
+    font-size: 16px;
+    background-color: red;
+    padding: 15px 30px;
+    color: white;
+    width: 200px;    
+}
+
 
 .count {
     font-size: 140px;

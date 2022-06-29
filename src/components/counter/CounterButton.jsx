@@ -16,8 +16,8 @@ class CounterButton extends Component {
 
     render() {
         return (
-        <div className='counterButton'>
-            <button onClick={this.increment}>{this.props.sign}{this.props.by}</button>
+        <div >
+            <button className='counterButton' onClick={this.increment}>{this.props.sign}{this.props.by}</button>
         </div>
         )
     }
