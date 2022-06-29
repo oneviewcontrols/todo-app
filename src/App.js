@@ -5,14 +5,13 @@ import FirstComponent from './components/learning-examples/FirstComponent';
 import SecondComponent from './components/learning-examples/SecondComponent';
 import ThirdComponent from './components/learning-examples/ThirdComponent';
 import Counter from './components/counter/Counter';
+import CounterButton from './components/counter/CounterButton';
  
 class App extends Component {
   render() {
     return (
       <div className="App">
          <Counter/>
-         <Counter by={5}/>
-         <Counter by={10}/>
       </div>
     );
   }
