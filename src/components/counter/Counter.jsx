@@ -12,6 +12,7 @@ class Counter extends Component {
             counter : 0
         }
         this.increment = this.increment.bind(this);
+        this.decrement = this.decrement.bind(this);
         this.reset = this.reset.bind(this)
     }
 
@@ -21,15 +22,10 @@ class Counter extends Component {
             <div className='topDiv'>
                 <div className="counter">
                     <div>
-                        <CounterButton incrementMethod={this.increment}/>
-                        <CounterButton by={5} incrementMethod={this.increment}/>
-                        <CounterButton by={10} incrementMethod={this.increment}/>                    
-                    </div>
-                    <div>
-                        <CounterButton sign={""} by={-1} incrementMethod={this.increment}/>
-                        <CounterButton sign={""} by={-5} incrementMethod={this.increment}/>
-                        <CounterButton sign={""} by={-10} incrementMethod={this.increment}/>
-                    </div>                             
+                        <CounterButton by={1} incrementMethod={this.increment} decrementMethod={this.decrement}/>
+                        <CounterButton by={5} incrementMethod={this.increment} decrementMethod={this.decrement}/>
+                        <CounterButton by={10} incrementMethod={this.increment} decrementMethod={this.decrement}/>                    
+                    </div>                           
                 </div>
                 <span className="count">{this.state.counter}</span>   
                 <ResetButton resetMethod={this.reset}/>
@@ -42,6 +38,15 @@ class Counter extends Component {
         this.setState(
             (prevState) => {
                 return {counter: prevState.counter + by}
+            }
+        )           
+      }
+
+      decrement(by) {
+        //console.log(`Increment From Parent = ${by}`)
+        this.setState(
+            (prevState) => {
+                return {counter: prevState.counter - by}
             }
         )           
       }
@@ -63,3 +68,5 @@ Counter.defaultProps = {
 
   export default Counter;
 
+
+  
