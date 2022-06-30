@@ -1,19 +1,29 @@
 import React, {Component, isValidElement} from "react";
+import {BrowserRouter as Router,Route, Routes } from 'react-router-dom'
+import withNavigation from "./WithNavigation";
+
 
 class TodoApp extends Component {
 
 
     render() {
+        const LoginComponentWithNavigation = withNavigation(LoginComponent);
         return (
-
-            <div className="TodoApp">
-                <LoginComponent/>
-            </div>
+                <div className="TodoApp">
+                    <Router>
+                        <Routes>
+                            <Route path="/" element={<LoginComponentWithNavigation />} />
+                            <Route path="/login" element={<LoginComponentWithNavigation />} />
+                            <Route path="/welcome" element={<WelcomeComponent />} />
+                        </Routes>
+                    </Router>
+                </div>
         );
 
     }
 
 }
+
 
 class LoginComponent extends Component {
 
@@ -37,8 +47,7 @@ class LoginComponent extends Component {
 
     loginClicked() {
         if (this.state.username ==='ansancle' & this.state.password==='password') {
-            this.setState({showSuccessMessage:true})
-            this.setState({hasLoginFailed:false})
+            this.props.navigate(`/welcome`)
         } else {
             this.setState({showSuccessMessage:false})
             this.setState({hasLoginFailed:true})
@@ -60,8 +69,8 @@ class LoginComponent extends Component {
     render() {
         return (
             <div className="LoginComponent">
-                <div name="invalid" hidden={!this.state.hasLoginFailed}>Invalid Credentials</div>
-                <div name="valid" hidden={!this.state.showSuccessMessage}>Login Sucessful</div>
+                <div hidden={!this.state.hasLoginFailed}>Invalid Credentials</div>
+                <div hidden={!this.state.showSuccessMessage}>Login Sucessful</div>
                User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
                Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
                <button onClick={this.loginClicked}>Login</button>
@@ -69,6 +78,15 @@ class LoginComponent extends Component {
         );
     }
 }
+
+class WelcomeComponent extends Component {
+    render() {
+        return (
+            <div> Welcome ansancle</div>
+        );
+    }
+}
+
 
 
 
