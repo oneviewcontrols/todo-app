@@ -15,6 +15,7 @@ class TodoApp extends Component {
                             <Route path="/" element={<LoginComponentWithNavigation />} />
                             <Route path="/login" element={<LoginComponentWithNavigation />} />
                             <Route path="/welcome" element={<WelcomeComponent />} />
+                            <Route path="*" element={<ErrorComponent/>}/>
                         </Routes>
                     </Router>
                 </div>
@@ -87,7 +88,9 @@ class WelcomeComponent extends Component {
     }
 }
 
-
+function ErrorComponent() {
+    return <div>An Error Occurred</div>
+}
 
 
 export default TodoApp;
