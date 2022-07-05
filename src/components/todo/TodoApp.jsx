@@ -2,7 +2,7 @@ import React, {Component, isValidElement} from "react";
 import {BrowserRouter as Router,Route, Routes, Link } from 'react-router-dom'
 import withNavigation from "./WithNavigation";
 import withParams from "./WithParams";
-
+import AuthenticationService from "./AuthenticationService.js";
 
 class TodoApp extends Component {
 
@@ -33,17 +33,18 @@ class TodoApp extends Component {
 
 class HeaderComponent extends Component {
     render() {
+        const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
         return (
             <header>
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <div><a href="www.weather.com" className="navbar-brand">First Link</a></div>
                     <ul className="navbar-nav">
-                        <li ><Link className="nav-link" to="/welcome/ansancle">Home</Link></li>
-                        <li ><Link className="nav-link" to="/todos">Todos</Link></li>
+                      {isUserLoggedIn && <li ><Link className="nav-link" to="/welcome/ansancle">Home</Link></li> }
+                      {isUserLoggedIn && <li ><Link className="nav-link" to="/todos">Todos</Link></li> }
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
-                        <li ><Link className="nav-link" to="/login">Login</Link></li>
-                        <li ><Link className="nav-link" to="/logout">Logout</Link></li>
+                       {!isUserLoggedIn && <li ><Link className="nav-link" to="/login">Login</Link></li>}
+                       {isUserLoggedIn && <li ><Link className="nav-link" to="/logout" onClick={AuthenticationService.logout}>Logout</Link></li> }
                     </ul>
                 </nav>
             </header>
@@ -98,7 +99,8 @@ class LoginComponent extends Component {
     }
 
     loginClicked() {
-        if (this.state.username ==='ansancle' & this.state.password==='password') {
+        if (this.state.username ==='ansancle' & this.state.password ==='password') {
+            AuthenticationService.registerSuccessfulLogin(this.state.username,this.state.password)
             this.props.navigate(`/welcome/${this.state.username}`)
         } else {
             this.setState({showSuccessMessage:false})
@@ -107,25 +109,17 @@ class LoginComponent extends Component {
     
     }
 
-        
-    
-
-    // handleUserNameChange(event) {
-    //     this.setState({username : event.target.value})
-    // }
-
-    // handlePasswordChange(event) {
-    //     this.setState({password : event.target.value})
-    // }
-
     render() {
         return (
-            <div className="LoginComponent">
-                <div hidden={!this.state.hasLoginFailed}>Invalid Credentials</div>
-                <div hidden={!this.state.showSuccessMessage}>Login Sucessful</div>
+            <div>
+                <h1>Login</h1>
+                <div className="container">
+                <div className="alert alert-warning" hidden={!this.state.hasLoginFailed}>Invalid Credentials</div>
+                {/* <div hidden={!this.state.showSuccessMessage}>Login Sucessful</div> */}
                User Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange}/>
                Password: <input type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
-               <button onClick={this.loginClicked}>Login</button>
+               <button style={{marginLeft: 10 + 'px'}}  className="btn btn-success" onClick={this.loginClicked}>Login</button>
+               </div>
             </div>
         );
     }
@@ -148,29 +142,29 @@ class ListTodosComponent extends Component {
         return (
             <div>
                 <h1>List Todos</h1>
-                <table width="100%" align="center">
-                    <thead>
-                        <tr>
-                            <th width="15%" align="center">Id</th>
-                            <th width="25%" align="center">Description</th>
-                            <th width="40%" align="center">Target Date</th>
-                            <th width="25%" align="center">Is Completed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                        this.state.todos.map(
-                            todo =>
-                                <tr>
-                                    <td>{todo.id}</td>
-                                     <td>{todo.description}</td>
-                                     <td>{todo.targetDate.toString()}</td>
-                                     <td>{todo.done.toString()}</td>                                     
-                                </tr>
-                            )
-                        }   
-                    </tbody>
-                </table>
+                <div className="container">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th width="25%" align="center">Description</th>
+                                <th width="40%" align="center">Target Date</th>
+                                <th width="25%" align="center">Is Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                            this.state.todos.map(
+                                todo =>
+                                    <tr key={todo.id}>
+                                        <td>{todo.description}</td>
+                                        <td>{todo.targetDate.toString()}</td>
+                                        <td>{todo.done.toString()}</td>                                     
+                                    </tr>
+                                )
+                            }   
+                        </tbody>
+                    </table>
+                </div>
             </div>
         );
     }
@@ -181,7 +175,10 @@ class WelcomeComponent extends Component {
     render() {
         return (
             <div> 
-                Welcome {this.props.params.name}. Manage Todos <Link to="/todos">Here</Link>
+                <h1>Welcome</h1>
+                    <div className="container">
+                        Welcome {this.props.params.name}. Manage Todos <Link to="/todos">Here</Link>
+                    </div>
             </div>
         );
     }
