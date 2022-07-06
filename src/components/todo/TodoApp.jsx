@@ -1,8 +1,17 @@
 import React, {Component, isValidElement} from "react";
-import {BrowserRouter as Router,Route, Routes, Link } from 'react-router-dom'
+import {BrowserRouter as Router,Route, Routes, Link, Navigate } from 'react-router-dom'
 import withNavigation from "./WithNavigation";
 import withParams from "./WithParams";
 import AuthenticationService from "./AuthenticationService.js";
+import AuthenticatedRoute from "./AuthenticatedRoute";
+
+
+const PrivateRoute = ({ children }) => {
+    const authed = AuthenticationService.isUserLoggedIn() // isauth() returns true or false based on localStorage
+    
+    return authed ? children : <Navigate to="/Login" />;
+  }
+
 
 class TodoApp extends Component {
 
@@ -10,21 +19,35 @@ class TodoApp extends Component {
     render() {
         const LoginComponentWithNavigation = withNavigation(LoginComponent);
         const WelcomeComponentWithParams = withParams(WelcomeComponent);
+        const HeaderComponentWithNavigation = withNavigation(HeaderComponent);
         return (
-                <div className="TodoApp">
+                <>
                     <Router>
-                        <HeaderComponent/>
+                        <HeaderComponentWithNavigation/>
                         <Routes>
                             <Route path="/" element={<LoginComponentWithNavigation />} />
                             <Route path="/login" element={<LoginComponentWithNavigation />} />
-                            <Route path="/welcome/:name" element={<WelcomeComponentWithParams />} />
-                            <Route path="/todos" element={<ListTodosComponent />} />
-                            <Route path="/logout" element={<LogoutComponent />} />
+                            <Route path="/welcome/:name" element={
+                                <PrivateRoute>
+                                <WelcomeComponentWithParams />
+                                </PrivateRoute>
+                            } /> 
+                            <Route path="/todos" element={
+                                <PrivateRoute>
+                                <ListTodosComponent />
+                                </PrivateRoute>
+                            } />
+                            <Route path="/logout" element={
+                                <PrivateRoute>
+                                <LogoutComponent />
+                                </PrivateRoute>
+                            } />
+
                             <Route path="*" element={<ErrorComponent/>}/>
                         </Routes>
                         <FooterComponent/>
                     </Router>                    
-                </div>
+                </>
         );
 
     }
@@ -39,12 +62,12 @@ class HeaderComponent extends Component {
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <div><a href="www.weather.com" className="navbar-brand">First Link</a></div>
                     <ul className="navbar-nav">
-                      {isUserLoggedIn && <li ><Link className="nav-link" to="/welcome/ansancle">Home</Link></li> }
-                      {isUserLoggedIn && <li ><Link className="nav-link" to="/todos">Todos</Link></li> }
+                        {isUserLoggedIn && <li><Link className="nav-link" to="/welcome/in28minutes">Home</Link></li>}
+                        {isUserLoggedIn && <li><Link className="nav-link" to="/todos">Todos</Link></li>}
                     </ul>
                     <ul className="navbar-nav navbar-collapse justify-content-end">
-                       {!isUserLoggedIn && <li ><Link className="nav-link" to="/login">Login</Link></li>}
-                       {isUserLoggedIn && <li ><Link className="nav-link" to="/logout" onClick={AuthenticationService.logout}>Logout</Link></li> }
+                        {!isUserLoggedIn && <li><Link className="nav-link" to="/login">Login</Link></li>}
+                        {isUserLoggedIn && <li><Link className="nav-link" to="/logout" onClick={AuthenticationService.logout}>Logout</Link></li>}
                     </ul>
                 </nav>
             </header>
@@ -101,6 +124,7 @@ class LoginComponent extends Component {
     loginClicked() {
         if (this.state.username ==='ansancle' & this.state.password ==='password') {
             AuthenticationService.registerSuccessfulLogin(this.state.username,this.state.password)
+            this.setState({hasLoginFailed:false})
             this.props.navigate(`/welcome/${this.state.username}`)
         } else {
             this.setState({showSuccessMessage:false})
