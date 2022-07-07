@@ -4,10 +4,6 @@ import './Counter.css'
 
 class CounterButton extends Component {
     
-    
-    constructor() {
-        super()
-    }
 
 
     render() {

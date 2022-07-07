@@ -1,4 +1,4 @@
-import React, {Component, isValidElement} from "react";
+import React, {Component} from "react";
 
 
 class FooterComponent extends Component {

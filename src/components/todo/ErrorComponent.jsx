@@ -1,4 +1,4 @@
-import React, {Component, isValidElement} from "react";
+import React from "react";
 
 function ErrorComponent() {
     return <div>An Error Occurred</div>

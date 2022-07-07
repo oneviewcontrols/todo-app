@@ -1,5 +1,5 @@
-import React, {Component, isValidElement} from "react";
-import {BrowserRouter as Router,Route, Routes, Link, Navigate } from 'react-router-dom'
+import React, {Component} from "react";
+import {Link} from 'react-router-dom'
 import AuthenticationService from "./AuthenticationService.js";
 
 class HeaderComponent extends Component {
