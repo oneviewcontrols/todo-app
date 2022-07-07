@@ -10,14 +10,19 @@ class WelcomeComponent extends Component {
         this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this)
         this.handleError = this.handleError.bind(this)
         this.state = {
-            welcomeMessage : ''
+            title : 'Welcome',
+            welcomeMessage : '',
+            errorMessage : ''
         }
     }   
 
     render() {
         return (
             <div> 
-                <h1>Welcome</h1>
+                <h1>{this.state.title}</h1>
+                <div className="container">
+                        {this.state.errorMessage}
+                    </div>
                     <div className="container">
                         Welcome {this.props.params.name}. Manage Todos <Link to="/todos">Here</Link>
                     </div>
@@ -48,11 +53,18 @@ class WelcomeComponent extends Component {
     }
 
     handleSuccessfulResponse(response) {
-        this.setState({welcomeMessage: response.data.message})
+        this.setState({
+            welcomeMessage: response.data.message,
+            title : 'Welcome',
+            errorMessage : ''
+        })
     }
 
     handleError(error) {
-        this.setState({welcomeMessage: error.data})
+        this.setState({
+            errorMessage: error.message,
+            title : "Error"
+        })
     }
 
 }
