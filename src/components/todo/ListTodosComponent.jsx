@@ -11,6 +11,10 @@ class ListTodosComponent extends Component {
         }
     }
 
+    componentWillUnmount() {
+        
+    }
+
     componentDidMount() {
         let username = AuthenticationService.getLoggedInUserName()
         TodoDataService.retrieveAllTodos(username)
